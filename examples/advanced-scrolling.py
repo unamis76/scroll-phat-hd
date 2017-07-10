@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import time
-
+import json
+import requests
 import scrollphathd
 
 print("""
@@ -13,8 +14,26 @@ and then skips back to the beginning.
 Press Ctrl+C to exit.
 """)
 
+# URL: https://api.kraken.com/0/public/Ticker
+
+def krak(ticker):
+    uri = "https://api.kraken.com/0/public/Ticker"
+    blah = uri + "?pair=" + ticker
+    r = requests.get(blah)
+    json_data = r.text
+    fj = json.loads(json_data)
+    fuu = fj["result"][ticker]["c"]
+
+    for price in fuu:
+        btc = fuu[0]
+        size = fuu[1]
+    x = ( "%s" ) %(btc)
+    return x
+
+print krak("XXBTZEUR")
+
 # Uncomment to rotate 180 degrees
-#scrollphathd.rotate(180)
+scrollphathd.rotate(180)
 
 # Dial down the brightness
 scrollphathd.set_brightness(0.2)
@@ -26,12 +45,7 @@ rewind = True
 delay = 0.03
 
 # Change the lines below to your own message
-lines = ["In the old #BILGETANK we'll keep you in the know",
-         "In the old #BILGETANK we'll fix your techie woes",
-         "And we'll make things",
-         "And we'll break things",
-         "'til we're altogether aching",
-         "Then we'll grab a cup of grog down in the old #BILGETANK"]
+lines = [krak("XXBTZEUR")]
 
 # Determine how far apart each line should be spaced vertically
 line_height = scrollphathd.DISPLAY_HEIGHT + 2
